@@ -2,10 +2,10 @@
 """This module defines the User class"""
 
 from sqlalchemy import Column, String
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 
 
-class User(BaseModel):
+class User(BaseModel, Base):
     """ This class representing a user by various attributes"""
 
     __tablename__ = "users"
