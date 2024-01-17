@@ -3,6 +3,8 @@
 from sqlalchemy import Column, String
 from models.base_model import BaseModel, Base
 from sqlalchemy.orm import relationship
+from models.place import place
+from sqlalchemy.ext.declarative import declarative_base
 
 
 class User(BaseModel, Base):
@@ -18,5 +20,4 @@ class User(BaseModel, Base):
     places = relationship(
         "Place",
         cascade='all, delete, delete-orphan',
-        backref="user"
-    )
+        backref="user")
