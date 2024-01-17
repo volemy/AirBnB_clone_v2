@@ -19,3 +19,12 @@ class Place(BaseModel, Base):
     price_by_night = Column(Integer, nullable=False, default=0)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+
+    reviews = relationship("Review", cascade="delete", backref="place")
+
+    @property
+    def reviews(self):
+        """Getter attribute for reviews with FileStorage"""
+        from models import storage
+        all_reviews = storage.all(Review)
+        return [review for review in all_reviews.values() if review.place_id == self.id]
