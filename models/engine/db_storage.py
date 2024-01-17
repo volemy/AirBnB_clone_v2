@@ -30,12 +30,16 @@ class DBStorage:
 
     def __init__(self):
         """Initialize a new DBStorage instance."""
-        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
-                                      format(getenv("HBNB_MYSQL_USER"),
-                                             getenv("HBNB_MYSQL_PWD"),
-                                             getenv("HBNB_MYSQL_HOST"),
-                                             getenv("HBNB_MYSQL_DB")),
-                                      pool_pre_ping=True)
+        user = getenv("HBNB_MYSQL_USER", "root")
+        password = getenv("HBNB_MYSQL_PWD", "")
+        host = getenv("HBNB_MYSQL_HOST", "localhost")
+        database = getenv("HBNB_MYSQL_DB", "hbnb_dev")
+
+        self.__engine = create_engine(
+            "mysql+mysqldb://{}:{}@{}/{}".
+            format(user, password, host, database),
+            pool_pre_ping=True
+        )
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
@@ -47,17 +51,17 @@ class DBStorage:
         Return:
             Dict of queried classes in the format <class name>.<obj id> = obj.
         """
+        classes = [State, City, User, Place, Review, Amenity]
+
         if cls is None:
-            objs = self.__session.query(State).all()
-            objs.extend(self.__session.query(City).all())
-            objs.extend(self.__session.query(User).all())
-            objs.extend(self.__session.query(Place).all())
-            objs.extend(self.__session.query(Review).all())
-            objs.extend(self.__session.query(Amenity).all())
+            objs = []
+            for model_class in classes:
+                objs.extend(self.__session.query(model_class).all())
         else:
-            if type(cls) == str:
+            if isinstance(cls, str):
                 cls = eval(cls)
             objs = self.__session.query(cls)
+
         return {"{}.{}".format(type(o).__name__, o.id): o for o in objs}
 
     def new(self, obj):
