@@ -1,4 +1,4 @@
-i#!/usr/bin/env bash
+#!/usr/bin/env bash
 # Script that sets up your web servers for the deployment of web_static.
 
 # Install Nginx
@@ -26,12 +26,5 @@ chown -hR ubuntu:ubuntu /data/
 
 # Configure Nginx
 sed -i '/listen 80 default_server/a location /hbnb_static/ { alias /data/web_static/current/; }' /etc/nginx/sites-available/default
-sudo sed -i 's|root /var/www/html;|root /data/web_static/current;|g' /etc/nginx/sites-available/default
-sudo sed -i 's|server_name _;|server_name mydomainname.tech;|g' /etc/nginx/sites-available/default
-sudo sed -i '$ i \
-    location /hbnb_static { \
-        alias /data/web_static/current; \
-    }' /etc/nginx/sites-available/default
-
 # Restart Nginx
 service nginx restart
