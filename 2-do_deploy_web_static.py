@@ -19,18 +19,30 @@ def do_deploy(archive_path):
     """
     if not os.path.exists(archive_path):
         return False
-    try:
-        file_name = archive_path.split("/")[-1]
-        no_ext = file_name.split(".")[0]
-        path = "/data/web_static/releases/"
-        put(archive_path, '/tmp/')
-        run('mkdir -p {}{}/'.format(path, no_ext))
-        run('tar -xzf /tmp/{} -C {}{}/'.format(file_name, path, no_ext))
-        run('rm /tmp/{}'.format(file_name))
-        run('mv {}{}/web_static/* {}'.format(path, no_ext, path, no_ext))
-        run('rm -rf {}{}/web_static'.format(path, no_ext))
-        run('rm -rf /data/web_static/current')
-        run('ln -s {}{}/ /data/web_static/current'.format(path, no_ext))
-        return True
-    except:
+    filename = archive_path.split("/")[-1]
+    name = filename.split(".")[0]
+
+    if put(archive_path, "/tmp/{}".format(filename)).failed is True:
         return False
+    if run("rm -rf /data/web_static/releases/{}/".
+           format(name)).failed is True:
+        return False
+    if run("mkdir -p /data/web_static/releases/{}/".format(name)).failed is True:
+        return False
+    if run("tar -xzf /tmp/{} -C /data/web_static/releases/{}/".
+           format(filename, name)).failed is True:
+        return False
+    if run("rm /tmp/{}".format(filename)).failed is True:
+        return False
+    if run("mv /data/web_static/releases/{}/web_static/* "
+           "/data/web_static/releases/{}/".format(name, name)).failed is True:
+        return False
+    if run("rm -rf /data/web_static/releases/{}/web_static".
+           format(name)).failed is True:
+        return False
+    if run("rm -rf /data/web_static/current").failed is True:
+        return False
+    if run("ln -s /data/web_static/releases/{}/ /data/web_static/current".
+           format(name)).failed is True:
+        return False
+    return True
