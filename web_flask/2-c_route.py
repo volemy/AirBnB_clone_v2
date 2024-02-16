@@ -22,10 +22,13 @@ def hbnb():
     return "HBNB"
 
 @app.route('/c/<text>', strict_slashes=False)
-def c_route(text):
+def c_route(text=None):
     """This method displays "C" followed by value of text
     replace underscore with space """
-    return "c" + text.replace("_", " ")
+    if text:
+        return "C " + text.replace("_", " ")
+    else:
+        return "C"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
