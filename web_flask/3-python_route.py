@@ -35,10 +35,8 @@ def c_route(text=None):
 @app.route('/python/<text>', strict_slashes=False)
 def python(text="is cool"):
     """ This method display python followed by value of text """
-    if text:
-        return "python " + text.replace("_", " ")
-    else:
-        return "python"
+    return "python " + text.replace("_", " ")
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
