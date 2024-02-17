@@ -5,7 +5,7 @@
 """
 
 
-from flask import Flask, request, render_template_string
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -18,24 +18,21 @@ def hello():
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    "Returns HBNB"
+    """Returns HBNB"""
     return "HBNB"
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def c_route(text=None):
+def c_route(text):
     """This method displays "C" followed by value of text
     replace underscore with space """
-    if text:
-        return "C " + text.replace("_", " ")
-    else:
-        return "C"
+    return "C " + text.replace("_", " ")
 
 
 @app.route('/python/<text>', strict_slashes=False)
 def python(text="is cool"):
-    """ This method display python followed by value of text """
-    return "python " + text.replace("_", " ")
+    """ This method display "python" followed by value of text """
+    return "Python " + text.replace("_", " ")
 
 
 if __name__ == '__main__':
