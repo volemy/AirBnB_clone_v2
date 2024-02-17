@@ -23,10 +23,13 @@ def hbnb():
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def c_route(text):
+def c_route(text=None):
     """This method displays "C" followed by value of text
     replace underscore with space """
-    return "C " + text.replace("_", " ")
+    if text:
+        return "C " + text.replace("_", " ")
+    else:
+        return "C"
 
 
 @app.route('/python/<text>', strict_slashes=False)
