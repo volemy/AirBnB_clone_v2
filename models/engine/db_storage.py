@@ -43,6 +43,8 @@ class DBStorage:
         if getenv("HBNB_ENV") == "test":
             Base.metadata.drop_all(self.__engine)
 
+        self.reload()
+
     def all(self, cls=None):
         """Query on the curret database session all objects of the given class.
 
