@@ -1,4 +1,4 @@
-i#!/usr/bin/python3
+#!/usr/bin/python3
 """This starts a flask web application
     - / : displays "Hello HBNB!"
     - /hbnb : displays "HBNB"
