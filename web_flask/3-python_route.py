@@ -32,6 +32,7 @@ def c_route(text=None):
         return "C"
 
 
+@app.route('/python/', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def python(text="is cool"):
     """ This method display "python" followed by value of text """
