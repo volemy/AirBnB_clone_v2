@@ -5,10 +5,8 @@ import json
 
 class FileStorage:
     """This class manages storage of hbnb models in JSON format"""
-    def __init__(self, file_path='file.json'):
-        """Initializes the filestorage instance with given file path"""
-        self.__file_path = 'file.json'
-        self.__objects = {}
+    __file_path = 'file.json'
+    __objects = {}
 
     def all(self, cls=None):
         """Returns a dictionary of models currently in storage"""
@@ -57,7 +55,6 @@ class FileStorage:
     def close(self):
         """ Calls reload method for deserializing the JSON file to objects """
         self.reload()
-
 
     def delete(self, obj=None):
         """delete obj from __objects if it’s inside"""
