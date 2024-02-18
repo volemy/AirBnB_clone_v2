@@ -57,10 +57,15 @@ class DBStorage:
         classes = [State, City, User, Place, Review, Amenity]
 
         if cls is None:
-            return self.__session.query(BaseModel).all()
+            objs = []
+            for model_class in classes:
+                objs.extend(self.__session.query(model_class).all())
         else:
-            return {str(type(obj).__name__)+'.'+str(obj.id): obj for obj in
-                    self.__session.query(cls).all()}
+            if isinstance(cls, str):
+                cls = eval(cls)
+            objs = self.__session.query(cls)
+
+        return {"{}.{}".format(type(o).__name__, o.id): o for o in objs}
 
     def new(self, obj):
         """Add obj to the current database session."""
@@ -85,4 +90,4 @@ class DBStorage:
 
     def close(self):
         """Close the working SQLAlchemy session."""
-        self.__session.remove()
+        self.__session.close()
