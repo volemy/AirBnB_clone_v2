@@ -9,6 +9,15 @@ from sqlalchemy import Column
 from sqlalchemy import String
 from sqlalchemy.orm import relationship
 
+if getenv("HBNB_TYPE_STORAGE") == "db":
+    storage = DBStorage()
+    Base = storage.Base
+    storage.reload()
+else:
+    storage = FileStorage
+    storage.reload()
+
+
 class State(BaseModel, Base):
     """
     State class
@@ -17,17 +26,13 @@ class State(BaseModel, Base):
     name = Column(String(128), nullable=False)
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        from sqlalchemy import Column, String
-        from models.base_model import Base
-        from sqlalchemy.orm import relationship
-        name = Column(String(128), nullable=False)
         cities = relationship("City",  backref="state", cascade="all, delete")
-    else:
-        @property
-        def cities(self):
-            """Get a list of all related City objects."""
-            city_list = []
-            for city in list(models.storage.all(City).values()):
-                if city.state_id == self.id:
-                    city_list.append(city)
-            return city_list
+
+    @property
+    def cities(self):
+        """Get a list of all related City objects."""
+        city_list = []
+        for city in list(models.storage.all(City).values()):
+            if city.state_id == self.id:
+                city_list.append(city)
+        return city_list
