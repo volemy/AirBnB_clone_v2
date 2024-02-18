@@ -2,6 +2,7 @@
 """
 This module defines the class DBStorage for HBNB project
 """
+
 from os import getenv
 from models.base_model import Base
 from models.base_model import BaseModel
@@ -60,7 +61,6 @@ class DBStorage:
         else:
             return {str(type(obj).__name__)+'.'+str(obj.id): obj for obj in
                     self.__session.query(cls).all()}
-
 
     def new(self, obj):
         """Add obj to the current database session."""
