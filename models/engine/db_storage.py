@@ -56,17 +56,11 @@ class DBStorage:
         classes = [State, City, User, Place, Review, Amenity]
 
         if cls is None:
-            objs = []
-            for model_class in classes:
-                objs.update({"{}.{}".format(type(o).__name__, o.id):
-                        for o in self.__session.query(model_class).all()})
+            return self.__session.query(BaseModel).all()
         else:
-            if isinstance(cls, str):
-                cls = eval(cls)
-            objs = {"{}.{}".format(type(o).__name__, o.id):
-                for o in self.__session.query(cls).all()}
+            return {str(type(obj).__name__)+'.'+str(obj.id): obj for obj in
+                    self.__session.query(cls).all()}
 
-        return objs
 
     def new(self, obj):
         """Add obj to the current database session."""
