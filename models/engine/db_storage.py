@@ -2,7 +2,6 @@
 """
 This module defines the class DBStorage for HBNB project
 """
-
 from os import getenv
 from models.base_model import Base
 from models.base_model import BaseModel
