@@ -26,13 +26,12 @@ def states():
 
 
 @app.route('/states/<id>', strict_slashes=False)
-def state(state_id):
-    state = storage.get(State, state_id)
-    if state:
-        return render_template('9-state.html', state=state,
-                cities=sorted(state.cities, key=lambda x: x.name))
-    else:
-        return "Not found!"
+def states_id(id):
+    """List all states"""
+    for state in storage.all("State").values():
+        if state.id == id:
+            return render_template("9-states.html", states=state, mode='id')
+        return render_template("9-states.html", states=state)
 
 
 if __name__ == "__main__":
